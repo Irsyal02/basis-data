@@ -453,9 +453,6 @@ C:\Users\irsal>d:
 D:\> cd xampp\mysql\bin
 
 D:\xampp\mysql\bin>mysql -u root
-ERROR 1045 (28000): Plugin caching_sha2_password could not be loaded: The specified module could not be found. Library path is 'caching_sha2_password.dll'
-
-D:\xampp\mysql\bin>mysql -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 8
 Server version: 10.4.32-MariaDB mariadb.org binary distribution
