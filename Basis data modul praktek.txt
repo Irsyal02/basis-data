@@ -1,0 +1,2009 @@
+C:\Users\irsal>D:
+
+d:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 10
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| kasir_db           |
+| mahasiswa_db       |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+7 rows in set (0.111 sec)
+
+MariaDB [(none)]> create database irsalbs;
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [irsalbs]> CREATE TABLE Mkuliah (
+    ->   Kode_kul CHAR(5) PRIMARY KEY,
+    ->   Nama_kul CHAR(10),
+    ->   SKS NUMERIC(1),
+    ->   Smt_tawar DECIMAL(1,0)
+    -> );
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [irsalbs]> DESCRIBE Mkuliah;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| Kode_kul  | char(5)      | NO   | PRI | NULL    |       |
+| Nama_kul  | char(10)     | YES  |     | NULL    |       |
+| SKS       | decimal(1,0) | YES  |     | NULL    |       |
+| Smt_tawar | decimal(1,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.051 sec)
+
+MariaDB [irsalbs]> INSERT INTO Mkuliah (Kode_kul, Nama_kul, SKS, Smt_tawar)
+    -> VALUES
+    ->   ('TI101', 'Strukdat', 3, 1),
+    ->   ('TI102', 'BasisData', 3, 2),
+    ->   ('TI103', 'WebProg', 2, 1);
+Query OK, 3 rows affected (0.011 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [irsalbs]> DESCRIBE Mkuliah;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| Kode_kul  | char(5)      | NO   | PRI | NULL    |       |
+| Nama_kul  | char(10)     | YES  |     | NULL    |       |
+| SKS       | decimal(1,0) | YES  |     | NULL    |       |
+| Smt_tawar | decimal(1,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.039 sec)
+
+MariaDB [irsalbs]> SELECT * FROM Mkuliah;
++----------+-----------+------+-----------+
+| Kode_kul | Nama_kul  | SKS  | Smt_tawar |
++----------+-----------+------+-----------+
+| TI101    | Strukdat  |    3 |         1 |
+| TI102    | BasisData |    3 |         2 |
+| TI103    | WebProg   |    2 |         1 |
++----------+-----------+------+-----------+
+3 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT
+    ->   Kode_kul,
+    ->   Nama_kul,
+    ->   SKS,
+    ->   CASE
+    ->     WHEN Smt_tawar = 1 THEN 'Ganjil'
+    ->     WHEN Smt_tawar = 2 THEN 'Genap'
+    ->     ELSE 'Tidak Diketahui'
+    ->   END AS Semester
+    -> FROM Mkuliah;
++----------+-----------+------+----------+
+| Kode_kul | Nama_kul  | SKS  | Semester |
++----------+-----------+------+----------+
+| TI101    | Strukdat  |    3 | Ganjil   |
+| TI102    | BasisData |    3 | Genap    |
+| TI103    | WebProg   |    2 | Ganjil   |
++----------+-----------+------+----------+
+3 rows in set (0.008 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul FROM Mkuliah where sks = '2';
++----------+
+| Nama_kul |
++----------+
+| WebProg  |
++----------+
+1 row in set (0.005 sec)
+
+MariaDB [irsalbs]>  SELECT Kode_kul, Nama_kul FROM Mkuliah where sks = '2' AND smt_tawar % 2 = 1;
++----------+----------+
+| Kode_kul | Nama_kul |
++----------+----------+
+| TI103    | WebProg  |
++----------+----------+
+1 row in set (0.006 sec)
+
+MariaDB [irsalbs]> CREATE TABLE mhs (
+    ->   nim CHAR(14) NOT NULL PRIMARY KEY,
+    ->   nama CHAR(25) NOT NULL,
+    ->   alamat CHAR(40),
+    ->   jkel CHAR(1) CHECK (jkel = 'P' OR jkel = 'W'),
+    ->   Agama CHAR(1) DEFAULT '1' CHECK (Agama IN ('1','2','3','4','5')),
+    ->   tgl_lhr DATE
+    -> );
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [irsalbs]> INSERT INTO mhs VALUES
+    -> ('1413510050', 'Dhea Maulida','Jl. A. Yani 20 Subang','P','1','1999-10-20'),
+    -> ('151352082', 'Don Nugraha','Jl. Dago 10 Cikampek','P','1','1999-11-22'),
+    -> ('141351082', 'Fitri Febriani','Jl. Nakula 125 Plered','W','2','1999-08-16');
+Query OK, 3 rows affected (0.013 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [irsalbs]> INSERT INTO mhs VALUES
+    -> ('15135285', 'Joni Susanto','Jl. Seroja Raya Pasarwahan','P','4','1999-09-21');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [irsalbs]> INSERT INTO mhs VALUES
+    -> ('151351110', 'Suci Andriani','Jl. Seroja Raya Pwk','W','6','1998-09-21');
+ERROR 4025 (23000): CONSTRAINT `mhs.Agama` failed for `irsalbs`.`mhs`
+
+
+INSERT INTO mhs (nim, nama) VALUES ('1613512...' at line 1
+MariaDB [irsalbs]> INSERT INTO mhs (nim, nama) VALUES ('161351232', 'Fadly');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [irsalbs]> INSERT INTO mhs (nim, nama, alamat, jkel)
+    -> VALUES ('15331122','Jl. Arjuna 10 Subang','W');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+
+MariaDB [irsalbs]> INSERT INTO mhs (nim, nama, alamat, jkel, Agama)
+    -> VALUES ('161351244', 'Gondo Suwondo','Jl. Arjuna Raya 20 Pwk','P','2');
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [irsalbs]> INSERT INTO mhs (nim, nama, alamat, jkel, Agama)
+    -> VALUES ('161351144', 'Gondo Suwondo','Jl. Arjuna Raya 20 Pwk','P','1975-07-12');
+Query OK, 1 row affected, 1 warning (0.011 sec)
+
+MariaDB [irsalbs]> SELECT * FROM mhs;
++------------+----------------+----------------------------+------+-------+------------+
+| nim        | nama           | alamat                     | jkel | Agama | tgl_lhr    |
++------------+----------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida   | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha    | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto   | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly          | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
++------------+----------------+----------------------------+------+-------+------------+
+7 rows in set (0.003 sec)
+
+MariaDB [irsalbs]> show tables;
++-------------------+
+| Tables_in_irsalbs |
++-------------------+
+| mhs               |
+| mkuliah           |
++-------------------+
+2 rows in set (0.003 sec)
+
+
+
+
+
+C:\Users\irsal>d:
+
+D:\>cd d:xampp/mysql/bin
+
+D:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| irsalbs            |
+| kasir_db           |
+| mahasiswa_db       |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+8 rows in set (0.087 sec)
+
+MariaDB [(none)]> use irsalbs;
+Database changed
+MariaDB [irsalbs]> select * from mhs;
++------------+----------------+----------------------------+------+-------+------------+
+| nim        | nama           | alamat                     | jkel | Agama | tgl_lhr    |
++------------+----------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida   | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha    | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto   | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly          | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
++------------+----------------+----------------------------+------+-------+------------+
+7 rows in set (0.087 sec)
+
+MariaDB [irsalbs]> INSERT INTO mhs VALUES
+    -> ('15135285', 'Joni Susanto','Jl. Seroja Raya Pasarwahan','P','4','1999-09-21')
+    -> ('15135285', 'Joni Susanto','Jl. Seroja Raya Pasarwahan','P','4','1999-09-21')
+    -> Bye
+Ctrl-C -- exit!
+
+D:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use irsalbs;
+Database changed
+MariaDB [irsalbs]> select * from mhs;
++------------+----------------+----------------------------+------+-------+------------+
+| nim        | nama           | alamat                     | jkel | Agama | tgl_lhr    |
++------------+----------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida   | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha    | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto   | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly          | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
++------------+----------------+----------------------------+------+-------+------------+
+7 rows in set (0.001 sec)
+
+
+MariaDB [irsalbs]> INSERT INTO mhs VALUES
+    ->     ('181351001', 'Agus Wahyu','Jl. Nakula I No. 5 Pwk','P','2','1976-08-12'),
+    ->     ('181351002', 'Sari Wijaya','A. Yani. 20 Subang','W','1','1977-10-11'),
+    -> ('181351003', 'Lestari','Nakula raya 20 Plered','W','3','1975-11-15');
+Query OK, 3 rows affected (0.006 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [irsalbs]> select * from mhs;
++------------+----------------+----------------------------+------+-------+------------+
+| nim        | nama           | alamat                     | jkel | Agama | tgl_lhr    |
++------------+----------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida   | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha    | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto   | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly          | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo  | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
+| 181351001  | Agus Wahyu     | Jl. Nakula I No. 5 Pwk     | P    | 2     | 1976-08-12 |
+| 181351002  | Sari Wijaya    | A. Yani. 20 Subang         | W    | 1     | 1977-10-11 |
+| 181351003  | Lestari        | Nakula raya 20 Plered      | W    | 3     | 1975-11-15 |
++------------+----------------+----------------------------+------+-------+------------+
+10 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> select nama from mhs where jkel ='P';
++---------------+
+| nama          |
++---------------+
+| Dhea Maulida  |
+| Don Nugraha   |
+| Joni Susanto  |
+| Gondo Suwondo |
+| Gondo Suwondo |
+| Agus Wahyu    |
++---------------+
+6 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> select nama,alamat from mhs
+    -> where nim between '181351001' and '181351100';
++-------------+------------------------+
+| nama        | alamat                 |
++-------------+------------------------+
+| Agus Wahyu  | Jl. Nakula I No. 5 Pwk |
+| Sari Wijaya | A. Yani. 20 Subang     |
+| Lestari     | Nakula raya 20 Plered  |
++-------------+------------------------+
+3 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> select nama from mhs
+    -> where nama like 'Sari%';
++-------------+
+| nama        |
++-------------+
+| Sari Wijaya |
++-------------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> select nim, nama, alamat from mhs
+    -> where jkel <> 'W';
++------------+---------------+----------------------------+
+| nim        | nama          | alamat                     |
++------------+---------------+----------------------------+
+| 1413510050 | Dhea Maulida  | Jl. A. Yani 20 Subang      |
+| 151352082  | Don Nugraha   | Jl. Dago 10 Cikampek       |
+| 15135285   | Joni Susanto  | Jl. Seroja Raya Pasarwahan |
+| 161351144  | Gondo Suwondo | Jl. Arjuna Raya 20 Pwk     |
+| 161351244  | Gondo Suwondo | Jl. Arjuna Raya 20 Pwk     |
+| 181351001  | Agus Wahyu    | Jl. Nakula I No. 5 Pwk     |
++------------+---------------+----------------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> update mhs
+    -> set nama ='Lestari Handayani'
+    -> where nim ='181351003';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [irsalbs]> select * from mhs;
++------------+-------------------+----------------------------+------+-------+------------+
+| nim        | nama              | alamat                     | jkel | Agama | tgl_lhr    |
++------------+-------------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida      | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani    | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha       | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto      | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo     | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly             | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo     | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
+| 181351001  | Agus Wahyu        | Jl. Nakula I No. 5 Pwk     | P    | 2     | 1976-08-12 |
+| 181351002  | Sari Wijaya       | A. Yani. 20 Subang         | W    | 1     | 1977-10-11 |
+| 181351003  | Lestari Handayani | Nakula raya 20 Plered      | W    | 3     | 1975-11-15 |
++------------+-------------------+----------------------------+------+-------+------------+
+10 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> update mhs
+    -> set nama = 'Sari Wijayanti', tgl_lhr = '1977-10-17',
+    -> where nim = '181351002';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'where nim = '181351002'' at line 3
+MariaDB [irsalbs]>
+MariaDB [irsalbs]> update mhs
+    ->     set nama = 'Sari Wijayanti', tgl_lhr = '1977-10-17'
+    ->     where nim = '181351002';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [irsalbs]> select * from mhs;
++------------+-------------------+----------------------------+------+-------+------------+
+| nim        | nama              | alamat                     | jkel | Agama | tgl_lhr    |
++------------+-------------------+----------------------------+------+-------+------------+
+| 1413510050 | Dhea Maulida      | Jl. A. Yani 20 Subang      | P    | 1     | 1999-10-20 |
+| 141351082  | Fitri Febriani    | Jl. Nakula 125 Plered      | W    | 2     | 1999-08-16 |
+| 151352082  | Don Nugraha       | Jl. Dago 10 Cikampek       | P    | 1     | 1999-11-22 |
+| 15135285   | Joni Susanto      | Jl. Seroja Raya Pasarwahan | P    | 4     | 1999-09-21 |
+| 161351144  | Gondo Suwondo     | Jl. Arjuna Raya 20 Pwk     | P    | 1     | NULL       |
+| 161351232  | Fadly             | NULL                       | NULL | 1     | NULL       |
+| 161351244  | Gondo Suwondo     | Jl. Arjuna Raya 20 Pwk     | P    | 2     | NULL       |
+| 181351001  | Agus Wahyu        | Jl. Nakula I No. 5 Pwk     | P    | 2     | 1976-08-12 |
+| 181351002  | Sari Wijayanti    | A. Yani. 20 Subang         | W    | 1     | 1977-10-17 |
+| 181351003  | Lestari Handayani | Nakula raya 20 Plered      | W    | 3     | 1975-11-15 |
++------------+-------------------+----------------------------+------+-------+------------+
+10 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> delete from mhs
+    -> where jkel = 'p' or agama ='3';
+Query OK, 7 rows affected (0.005 sec)
+
+MariaDB [irsalbs]> select * from mhs;
++-----------+----------------+-----------------------+------+-------+------------+
+| nim       | nama           | alamat                | jkel | Agama | tgl_lhr    |
++-----------+----------------+-----------------------+------+-------+------------+
+| 141351082 | Fitri Febriani | Jl. Nakula 125 Plered | W    | 2     | 1999-08-16 |
+| 161351232 | Fadly          | NULL                  | NULL | 1     | NULL       |
+| 181351002 | Sari Wijayanti | A. Yani. 20 Subang    | W    | 1     | 1977-10-17 |
++-----------+----------------+-----------------------+------+-------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> delete from mhs
+    -> where nim between '181351100' and '181351300';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [irsalbs]> select * from mhs;
++-----------+----------------+-----------------------+------+-------+------------+
+| nim       | nama           | alamat                | jkel | Agama | tgl_lhr    |
++-----------+----------------+-----------------------+------+-------+------------+
+| 141351082 | Fitri Febriani | Jl. Nakula 125 Plered | W    | 2     | 1999-08-16 |
+| 161351232 | Fadly          | NULL                  | NULL | 1     | NULL       |
+| 181351002 | Sari Wijayanti | A. Yani. 20 Subang    | W    | 1     | 1977-10-17 |
++-----------+----------------+-----------------------+------+-------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [irsalbs]>
+
+
+CREATE TABLE mkuliah (
+         Kode_kul CHAR(7) PRIMARY KEY NOT NULL UNIQUE,
+         Nama_kul CHAR(20) NOT NULL,
+         SKS DECIMAL(2,0) NOT NULL,
+        Smt_tawar CHAR(1) CHECK (Smt_tawar IN ('1','2','3','4','5','6','7','8')),
+         Klp_kul CHAR(1) DEFAULT '4' CHECK (Klp_kul IN ('1','2','3','4')),
+         Prodi CHAR(1) CHECK (Prodi IN ('1','2'))
+);
+
+
+INSERT INTO mkuliah VALUES
+     ('IF18121','Pancasila', '2', '1', '1','1'),
+     ('IF18122','Logika Algoritma', '4','1', '2','1'),
+     ('IF18123','Pemrograman Basic', '2', '1', '2','1'),
+     ('IF18124','Basis Data', '2', '2', '2','1'),
+     ('IF18125','Pemrograman Pascal', '4', '2', '2','1'),
+     ('IF18126','Ilmu Sosial Dasar', '2', '2', '1','1'),
+    ('IF18127','Bimbingan Karier', '2', '5', '3','1'),
+    ('IF18128','Proyek Akhir', '4', '6', '3','1');
+
+
+SELECT Nama_kul FROM mkuliah 
+WHERE SKS = 2 AND Smt_tawar = '6';
+
+SELECT Nama_kul FROM mkuliah 
+WHERE SKS > 2;
+
+SELECT Nama_kul FROM mkuliah 
+WHERE Nama_kul LIKE 'P%';
+
+SELECT AVG(SKS) AS rata_sks
+     FROM mkuliah
+     WHERE Klp_kul = '0';
+
+
+
+
+Microsoft Windows [Version 10.0.26100.4202]
+(c) Microsoft Corporation. All rights reserved.
+
+
+C:\Users\irsal>d:
+
+D:\> cd xampp\mysql\bin
+
+D:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| irsalbs            |
+| kasir_db           |
+| mahasiswa_db       |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+8 rows in set (0.116 sec)
+
+MariaDB [(none)]> use irsalbs;
+Database changed
+MariaDB [irsalbs]> show tables;
++-------------------+
+| Tables_in_irsalbs |
++-------------------+
+| mhs               |
+| mkuliah           |
++-------------------+
+2 rows in set (0.003 sec)
+
+MariaDB [irsalbs]> select * from mkuliah;
++----------+-----------+------+-----------+
+| Kode_kul | Nama_kul  | SKS  | Smt_tawar |
++----------+-----------+------+-----------+
+| TI101    | Strukdat  |    3 |         1 |
+| TI102    | BasisData |    3 |         2 |
+| TI103    | WebProg   |    2 |         1 |
++----------+-----------+------+-----------+
+3 rows in set (0.086 sec)
+
+MariaDB [irsalbs]> drop table mkuliah;
+Query OK, 0 rows affected (0.016 sec)
+
+MariaDB [irsalbs]> show tables;
++-------------------+
+| Tables_in_irsalbs |
++-------------------+
+| mhs               |
++-------------------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> drop table mkuliah;
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [irsalbs]> CREATE TABLE mkuliah (
+    ->          Kode_kul CHAR(7) PRIMARY KEY NOT NULL UNIQUE,
+    ->          Nama_kul CHAR(20) NOT NULL,
+    ->          SKS DECIMAL(2,0) NOT NULL,
+    ->         Smt_tawar CHAR(1) CHECK (Smt_tawar IN ('1','2','3','4','5','6','7','8')),
+    ->          Klp_kul CHAR(1) DEFAULT '4' CHECK (Klp_kul IN ('1','2','3','4')),
+    ->          Prodi CHAR(1) CHECK (Prodi IN ('1','2'))
+    -> );
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [irsalbs]> show tables;
++-------------------+
+| Tables_in_irsalbs |
++-------------------+
+| mhs               |
+| mkuliah           |
++-------------------+
+2 rows in set (0.003 sec)
+
+MariaDB [irsalbs]> INSERT INTO mkuliah VALUES
+    ->      ('IF18121','Pancasila', '2', '1', '1','1'),
+    ->      ('IF18122','Logika Algoritma', '4','1', '2','1'),
+    ->      ('IF18123','Pemrograman Basic', '2', '1', '2','1'),
+    ->      ('IF18124','Basis Data', '2', '2', '2','1'),
+    ->      ('IF18125','Pemrograman Pascal', '4', '2', '2','1'),
+    ->      ('IF18126','Ilmu Sosial Dasar', '2', '2', '1','1'),
+    ->     ('IF18127','Bimbingan Karier', '2', '5', '3','1'),
+    ->     ('IF18128','Proyek Akhir', '4', '6', '3','1');
+Query OK, 8 rows affected (0.012 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MariaDB [irsalbs]> select * from mkuliah;
++----------+--------------------+-----+-----------+---------+-------+
+| Kode_kul | Nama_kul           | SKS | Smt_tawar | Klp_kul | Prodi |
++----------+--------------------+-----+-----------+---------+-------+
+| IF18121  | Pancasila          |   2 | 1         | 1       | 1     |
+| IF18122  | Logika Algoritma   |   4 | 1         | 2       | 1     |
+| IF18123  | Pemrograman Basic  |   2 | 1         | 2       | 1     |
+| IF18124  | Basis Data         |   2 | 2         | 2       | 1     |
+| IF18125  | Pemrograman Pascal |   4 | 2         | 2       | 1     |
+| IF18126  | Ilmu Sosial Dasar  |   2 | 2         | 1       | 1     |
+| IF18127  | Bimbingan Karier   |   2 | 5         | 3       | 1     |
+| IF18128  | Proyek Akhir       |   4 | 6         | 3       | 1     |
++----------+--------------------+-----+-----------+---------+-------+
+8 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul
+    -> FROM mkuliah
+    -> WHERE SKS = 2 AND Smt_tawar = '6';
+Empty set (0.004 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul FROM mkuliah
+    -> WHERE SKS = 2 AND Smt_tawar = '6';
+Empty set (0.006 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul FROM mkuliah
+    -> WHERE SKS > 2;
++--------------------+
+| Nama_kul           |
++--------------------+
+| Logika Algoritma   |
+| Pemrograman Pascal |
+| Proyek Akhir       |
++--------------------+
+3 rows in set (0.003 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul FROM mkuliah
+    -> WHERE Nama_kul LIKE 'P%';
++--------------------+
+| Nama_kul           |
++--------------------+
+| Pancasila          |
+| Pemrograman Basic  |
+| Pemrograman Pascal |
+| Proyek Akhir       |
++--------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> UPDATE mkuliah
+    -> SET Nama_kul = 'Pendidikan Pancasila'
+    -> WHERE Nama_kul = 'Pancasila';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [irsalbs]> select * from mkuliah;
++----------+----------------------+-----+-----------+---------+-------+
+| Kode_kul | Nama_kul             | SKS | Smt_tawar | Klp_kul | Prodi |
++----------+----------------------+-----+-----------+---------+-------+
+| IF18121  | Pendidikan Pancasila |   2 | 1         | 1       | 1     |
+| IF18122  | Logika Algoritma     |   4 | 1         | 2       | 1     |
+| IF18123  | Pemrograman Basic    |   2 | 1         | 2       | 1     |
+| IF18124  | Basis Data           |   2 | 2         | 2       | 1     |
+| IF18125  | Pemrograman Pascal   |   4 | 2         | 2       | 1     |
+| IF18126  | Ilmu Sosial Dasar    |   2 | 2         | 1       | 1     |
+| IF18127  | Bimbingan Karier     |   2 | 5         | 3       | 1     |
+| IF18128  | Proyek Akhir         |   4 | 6         | 3       | 1     |
++----------+----------------------+-----+-----------+---------+-------+
+8 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> UPDATE mkuliah
+    -> SET Nama_kul = 'Pemrograman (Basic)'
+    -> WHERE Nama_kul = 'Pemrograman Basic';
+Query OK, 1 row affected (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [irsalbs]> select * from mkuliah;
++----------+----------------------+-----+-----------+---------+-------+
+| Kode_kul | Nama_kul             | SKS | Smt_tawar | Klp_kul | Prodi |
++----------+----------------------+-----+-----------+---------+-------+
+| IF18121  | Pendidikan Pancasila |   2 | 1         | 1       | 1     |
+| IF18122  | Logika Algoritma     |   4 | 1         | 2       | 1     |
+| IF18123  | Pemrograman (Basic)  |   2 | 1         | 2       | 1     |
+| IF18124  | Basis Data           |   2 | 2         | 2       | 1     |
+| IF18125  | Pemrograman Pascal   |   4 | 2         | 2       | 1     |
+| IF18126  | Ilmu Sosial Dasar    |   2 | 2         | 1       | 1     |
+| IF18127  | Bimbingan Karier     |   2 | 5         | 3       | 1     |
+| IF18128  | Proyek Akhir         |   4 | 6         | 3       | 1     |
++----------+----------------------+-----+-----------+---------+-------+
+8 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> INSERT INTO mkuliah (Kode_kul, Nama_kul, SKS, Smt_tawar, Klp_kul, Prodi) VALUES
+    -> ('IF18129', 'Pemrograman Pascal', 4, '2', '2', '2'),
+    -> ('IF18130', 'Kewiraan', 2, '2', '1', '2'),
+    -> ('IF18131', 'Bimbingan Karier', 2, '5', '3', '2'),
+    -> ('IF18132', 'Tugas Akhir', 6, '6', '3', '2');
+Query OK, 4 rows affected (0.003 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [irsalbs]> select * from mkuliah;
++----------+----------------------+-----+-----------+---------+-------+
+| Kode_kul | Nama_kul             | SKS | Smt_tawar | Klp_kul | Prodi |
++----------+----------------------+-----+-----------+---------+-------+
+| IF18121  | Pendidikan Pancasila |   2 | 1         | 1       | 1     |
+| IF18122  | Logika Algoritma     |   4 | 1         | 2       | 1     |
+| IF18123  | Pemrograman (Basic)  |   2 | 1         | 2       | 1     |
+| IF18124  | Basis Data           |   2 | 2         | 2       | 1     |
+| IF18125  | Pemrograman Pascal   |   4 | 2         | 2       | 1     |
+| IF18126  | Ilmu Sosial Dasar    |   2 | 2         | 1       | 1     |
+| IF18127  | Bimbingan Karier     |   2 | 5         | 3       | 1     |
+| IF18128  | Proyek Akhir         |   4 | 6         | 3       | 1     |
+| IF18129  | Pemrograman Pascal   |   4 | 2         | 2       | 2     |
+| IF18130  | Kewiraan             |   2 | 2         | 1       | 2     |
+| IF18131  | Bimbingan Karier     |   2 | 5         | 3       | 2     |
+| IF18132  | Tugas Akhir          |   6 | 6         | 3       | 2     |
++----------+----------------------+-----+-----------+---------+-------+
+12 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> UPDATE mkuliah
+    -> SET Nama_kul = 'Pendidikan Kewarganegaraan'
+    -> WHERE Nama_kul = 'Kewiraan';
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [irsalbs]> SELECT COUNT(*) AS jumlah_data
+    -> FROM mkuliah;
++-------------+
+| jumlah_data |
++-------------+
+|          12 |
++-------------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul, SKS
+    -> FROM mkuliah
+    -> ORDER BY Nama_kul ASC;
++----------------------+-----+
+| Nama_kul             | SKS |
++----------------------+-----+
+| Basis Data           |   2 |
+| Bimbingan Karier     |   2 |
+| Bimbingan Karier     |   2 |
+| Ilmu Sosial Dasar    |   2 |
+| Logika Algoritma     |   4 |
+| Pemrograman (Basic)  |   2 |
+| Pemrograman Pascal   |   4 |
+| Pemrograman Pascal   |   4 |
+| Pendidikan Kewargane |   2 |
+| Pendidikan Pancasila |   2 |
+| Proyek Akhir         |   4 |
+| Tugas Akhir          |   6 |
++----------------------+-----+
+12 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT Nama_kul, SKS, Smt_tawar, Prodi
+    -> FROM mkuliah
+    -> ORDER BY Smt_tawar ASC, Prodi DESC;
++----------------------+-----+-----------+-------+
+| Nama_kul             | SKS | Smt_tawar | Prodi |
++----------------------+-----+-----------+-------+
+| Pendidikan Pancasila |   2 | 1         | 1     |
+| Logika Algoritma     |   4 | 1         | 1     |
+| Pemrograman (Basic)  |   2 | 1         | 1     |
+| Pendidikan Kewargane |   2 | 2         | 2     |
+| Pemrograman Pascal   |   4 | 2         | 2     |
+| Basis Data           |   2 | 2         | 1     |
+| Pemrograman Pascal   |   4 | 2         | 1     |
+| Ilmu Sosial Dasar    |   2 | 2         | 1     |
+| Bimbingan Karier     |   2 | 5         | 2     |
+| Bimbingan Karier     |   2 | 5         | 1     |
+| Tugas Akhir          |   6 | 6         | 2     |
+| Proyek Akhir         |   4 | 6         | 1     |
++----------------------+-----+-----------+-------+
+12 rows in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT *
+    -> FROM mkuliah
+    -> ORDER BY Klp_kul;
++----------+----------------------+-----+-----------+---------+-------+
+| Kode_kul | Nama_kul             | SKS | Smt_tawar | Klp_kul | Prodi |
++----------+----------------------+-----+-----------+---------+-------+
+| IF18121  | Pendidikan Pancasila |   2 | 1         | 1       | 1     |
+| IF18126  | Ilmu Sosial Dasar    |   2 | 2         | 1       | 1     |
+| IF18130  | Pendidikan Kewargane |   2 | 2         | 1       | 2     |
+| IF18122  | Logika Algoritma     |   4 | 1         | 2       | 1     |
+| IF18123  | Pemrograman (Basic)  |   2 | 1         | 2       | 1     |
+| IF18124  | Basis Data           |   2 | 2         | 2       | 1     |
+| IF18125  | Pemrograman Pascal   |   4 | 2         | 2       | 1     |
+| IF18129  | Pemrograman Pascal   |   4 | 2         | 2       | 2     |
+| IF18131  | Bimbingan Karier     |   2 | 5         | 3       | 2     |
+| IF18128  | Proyek Akhir         |   4 | 6         | 3       | 1     |
+| IF18127  | Bimbingan Karier     |   2 | 5         | 3       | 1     |
+| IF18132  | Tugas Akhir          |   6 | 6         | 3       | 2     |
++----------+----------------------+-----+-----------+---------+-------+
+12 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT Klp_kul, SUM(SKS) AS total_sks
+    -> FROM mkuliah
+    -> GROUP BY Klp_kul;
++---------+-----------+
+| Klp_kul | total_sks |
++---------+-----------+
+| 1       |         6 |
+| 2       |        16 |
+| 3       |        14 |
++---------+-----------+
+3 rows in set (0.004 sec)
+
+MariaDB [irsalbs]> SELECT Prodi, SUM(SKS) AS total_sks
+    -> FROM mkuliah
+    -> GROUP BY Prodi;
++-------+-----------+
+| Prodi | total_sks |
++-------+-----------+
+| 1     |        22 |
+| 2     |        14 |
++-------+-----------+
+2 rows in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT MIN(SKS) AS sks_terkecil
+    -> FROM mkuliah
+    -> WHERE Prodi = '1';
++--------------+
+| sks_terkecil |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT MAX(SKS) AS sks_terbesar
+    -> FROM mkuliah
+    -> WHERE Prodi = '1';
++--------------+
+| sks_terbesar |
++--------------+
+|            4 |
++--------------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT MIN(SKS) AS sks_terkecil
+    -> FROM mkuliah
+    -> WHERE Prodi = '2';
++--------------+
+| sks_terkecil |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT AVG(SKS) AS rata_sks
+    -> FROM mkuliah
+    -> WHERE Klp_kul = '1';
++----------+
+| rata_sks |
++----------+
+|   2.0000 |
++----------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT AVG(SKS) AS rata_sks
+    -> FROM mkuliah
+    -> WHERE Klp_kul = '2';
++----------+
+| rata_sks |
++----------+
+|   3.2000 |
++----------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT SUM(SKS) AS total_sks
+    -> FROM mkuliah
+    -> WHERE Klp_kul = '1';
++-----------+
+| total_sks |
++-----------+
+|         6 |
++-----------+
+1 row in set (0.002 sec)
+
+MariaDB [irsalbs]> SELECT SUM(SKS) AS total_sks
+    -> FROM mkuliah
+    -> WHERE Klp_kul = '2';
++-----------+
+| total_sks |
++-----------+
+|        16 |
++-----------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT COUNT(*) AS jumlah_mk
+    -> FROM mkuliah
+    -> WHERE Klp_kul = '1';
++-----------+
+| jumlah_mk |
++-----------+
+|         3 |
++-----------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]> SELECT AVG(SKS) AS rata_sks
+    ->      FROM mkuliah
+    ->      WHERE Klp_kul = '0';
++----------+
+| rata_sks |
++----------+
+|     NULL |
++----------+
+1 row in set (0.001 sec)
+
+MariaDB [irsalbs]>
+
+
+
+
+PERTEMUAN 6 BELUMM DI BUAT KARNA BUKAN TUGAS
+
+
+
+
+Microsoft Windows [Version 10.0.26100.4351]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\irsal>d:\xampp\mysql\bin
+'d:\xampp\mysql\bin' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\irsal>cd d:/xampp/mysql/bin
+
+C:\Users\irsal>d
+'d' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\irsal>d:
+
+d:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database hr086;
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [(none)]> Bye
+Ctrl-C -- exit!
+
+d:\xampp\mysql\bin>mysql -u root hr086 < d:\download\hr-schema-mysql.sql
+The system cannot find the path specified.
+
+d:\xampp\mysql\bin>mysql -u root hr086 < c:\hr-schema-mysql.sql
+
+d:\xampp\mysql\bin>mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 10
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use hr086;
+Database changed
+MariaDB [hr086]> show tables;
++------------------+
+| Tables_in_hr086  |
++------------------+
+| countries        |
+| departments      |
+| emp_details_view |
+| employees        |
+| job_history      |
+| jobs             |
+| locations        |
+| regions          |
++------------------+
+8 rows in set (0.007 sec)
+
+MariaDB [hr086]> select E.first_name , E.last_name ,
+    -> E.department_id , D.department_name
+    -> FROM employees E
+    -> INNER JOIN dapartments D
+    -> ON E.department_id = D.department_id;
+ERROR 1146 (42S02): Table 'hr086.dapartments' doesn't exist
+MariaDB [hr086]> select E.first_name , E.last_name ,
+    ->      E.department_id , D.department_name
+    ->      FROM employees E
+    ->      INNER JOIN departments D
+    ->      ON E.department_id = D.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Jennifer    | Whalen      |            10 | Administration   |
+| Michael     | Hartstein   |            20 | Marketing        |
+| Pat         | Fay         |            20 | Marketing        |
+| Den         | Raphaely    |            30 | Purchasing       |
+| Alexander   | Khoo        |            30 | Purchasing       |
+| Shelli      | Baida       |            30 | Purchasing       |
+| Sigal       | Tobias      |            30 | Purchasing       |
+| Guy         | Himuro      |            30 | Purchasing       |
+| Karen       | Colmenares  |            30 | Purchasing       |
+| Susan       | Mavris      |            40 | Human Resources  |
+| Matthew     | Weiss       |            50 | Shipping         |
+| Adam        | Fripp       |            50 | Shipping         |
+| Payam       | Kaufling    |            50 | Shipping         |
+| Shanta      | Vollman     |            50 | Shipping         |
+| Kevin       | Mourgos     |            50 | Shipping         |
+| Julia       | Nayer       |            50 | Shipping         |
+| Irene       | Mikkilineni |            50 | Shipping         |
+| James       | Landry      |            50 | Shipping         |
+| Steven      | Markle      |            50 | Shipping         |
+| Laura       | Bissot      |            50 | Shipping         |
+| Mozhe       | Atkinson    |            50 | Shipping         |
+| James       | Marlow      |            50 | Shipping         |
+| TJ          | Olson       |            50 | Shipping         |
+| Jason       | Mallin      |            50 | Shipping         |
+| Michael     | Rogers      |            50 | Shipping         |
+| Ki          | Gee         |            50 | Shipping         |
+| Hazel       | Philtanker  |            50 | Shipping         |
+| Renske      | Ladwig      |            50 | Shipping         |
+| Stephen     | Stiles      |            50 | Shipping         |
+| John        | Seo         |            50 | Shipping         |
+| Joshua      | Patel       |            50 | Shipping         |
+| Trenna      | Rajs        |            50 | Shipping         |
+| Curtis      | Davies      |            50 | Shipping         |
+| Randall     | Matos       |            50 | Shipping         |
+| Peter       | Vargas      |            50 | Shipping         |
+| Winston     | Taylor      |            50 | Shipping         |
+| Jean        | Fleaur      |            50 | Shipping         |
+| Martha      | Sullivan    |            50 | Shipping         |
+| Girard      | Geoni       |            50 | Shipping         |
+| Nandita     | Sarchand    |            50 | Shipping         |
+| Alexis      | Bull        |            50 | Shipping         |
+| Julia       | Dellinger   |            50 | Shipping         |
+| Anthony     | Cabrio      |            50 | Shipping         |
+| Kelly       | Chung       |            50 | Shipping         |
+| Jennifer    | Dilly       |            50 | Shipping         |
+| Timothy     | Gates       |            50 | Shipping         |
+| Randall     | Perkins     |            50 | Shipping         |
+| Sarah       | Bell        |            50 | Shipping         |
+| Britney     | Everett     |            50 | Shipping         |
+| Samuel      | McCain      |            50 | Shipping         |
+| Vance       | Jones       |            50 | Shipping         |
+| Alana       | Walsh       |            50 | Shipping         |
+| Kevin       | Feeney      |            50 | Shipping         |
+| Donald      | OConnell    |            50 | Shipping         |
+| Douglas     | Grant       |            50 | Shipping         |
+| Alexander   | Hunold      |            60 | IT               |
+| Bruce       | Ernst       |            60 | IT               |
+| David       | Austin      |            60 | IT               |
+| Valli       | Pataballa   |            60 | IT               |
+| Diana       | Lorentz     |            60 | IT               |
+| Hermann     | Baer        |            70 | Public Relations |
+| John        | Russell     |            80 | Sales            |
+| Karen       | Partners    |            80 | Sales            |
+| Alberto     | Errazuriz   |            80 | Sales            |
+| Gerald      | Cambrault   |            80 | Sales            |
+| Eleni       | Zlotkey     |            80 | Sales            |
+| Peter       | Tucker      |            80 | Sales            |
+| David       | Bernstein   |            80 | Sales            |
+| Peter       | Hall        |            80 | Sales            |
+| Christopher | Olsen       |            80 | Sales            |
+| Nanette     | Cambrault   |            80 | Sales            |
+| Oliver      | Tuvault     |            80 | Sales            |
+| Janette     | King        |            80 | Sales            |
+| Patrick     | Sully       |            80 | Sales            |
+| Allan       | McEwen      |            80 | Sales            |
+| Lindsey     | Smith       |            80 | Sales            |
+| Louise      | Doran       |            80 | Sales            |
+| Sarath      | Sewall      |            80 | Sales            |
+| Clara       | Vishney     |            80 | Sales            |
+| Danielle    | Greene      |            80 | Sales            |
+| Mattea      | Marvins     |            80 | Sales            |
+| David       | Lee         |            80 | Sales            |
+| Sundar      | Ande        |            80 | Sales            |
+| Amit        | Banda       |            80 | Sales            |
+| Lisa        | Ozer        |            80 | Sales            |
+| Harrison    | Bloom       |            80 | Sales            |
+| Tayler      | Fox         |            80 | Sales            |
+| William     | Smith       |            80 | Sales            |
+| Elizabeth   | Bates       |            80 | Sales            |
+| Sundita     | Kumar       |            80 | Sales            |
+| Ellen       | Abel        |            80 | Sales            |
+| Alyssa      | Hutton      |            80 | Sales            |
+| Jonathon    | Taylor      |            80 | Sales            |
+| Jack        | Livingston  |            80 | Sales            |
+| Charles     | Johnson     |            80 | Sales            |
+| Steven      | King        |            90 | Executive        |
+| Neena       | Kochhar     |            90 | Executive        |
+| Lex         | De Haan     |            90 | Executive        |
+| Nancy       | Greenberg   |           100 | Finance          |
+| Daniel      | Faviet      |           100 | Finance          |
+| John        | Chen        |           100 | Finance          |
+| Ismael      | Sciarra     |           100 | Finance          |
+| Jose Manuel | Urman       |           100 | Finance          |
+| Luis        | Popp        |           100 | Finance          |
+| Shelley     | Higgins     |           110 | Accounting       |
+| William     | Gietz       |           110 | Accounting       |
++-------------+-------------+---------------+------------------+
+106 rows in set (0.009 sec)
+
+MariaDB [hr086]> SELECT E.first_name, E.last_name, E.department_id, D.department_name
+    -> FROM employees E
+    -> LEFT OUTER JOIN departments D
+    -> ON E.department_id = D.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Steven      | King        |            90 | Executive        |
+| Neena       | Kochhar     |            90 | Executive        |
+| Lex         | De Haan     |            90 | Executive        |
+| Alexander   | Hunold      |            60 | IT               |
+| Bruce       | Ernst       |            60 | IT               |
+| David       | Austin      |            60 | IT               |
+| Valli       | Pataballa   |            60 | IT               |
+| Diana       | Lorentz     |            60 | IT               |
+| Nancy       | Greenberg   |           100 | Finance          |
+| Daniel      | Faviet      |           100 | Finance          |
+| John        | Chen        |           100 | Finance          |
+| Ismael      | Sciarra     |           100 | Finance          |
+| Jose Manuel | Urman       |           100 | Finance          |
+| Luis        | Popp        |           100 | Finance          |
+| Den         | Raphaely    |            30 | Purchasing       |
+| Alexander   | Khoo        |            30 | Purchasing       |
+| Shelli      | Baida       |            30 | Purchasing       |
+| Sigal       | Tobias      |            30 | Purchasing       |
+| Guy         | Himuro      |            30 | Purchasing       |
+| Karen       | Colmenares  |            30 | Purchasing       |
+| Matthew     | Weiss       |            50 | Shipping         |
+| Adam        | Fripp       |            50 | Shipping         |
+| Payam       | Kaufling    |            50 | Shipping         |
+| Shanta      | Vollman     |            50 | Shipping         |
+| Kevin       | Mourgos     |            50 | Shipping         |
+| Julia       | Nayer       |            50 | Shipping         |
+| Irene       | Mikkilineni |            50 | Shipping         |
+| James       | Landry      |            50 | Shipping         |
+| Steven      | Markle      |            50 | Shipping         |
+| Laura       | Bissot      |            50 | Shipping         |
+| Mozhe       | Atkinson    |            50 | Shipping         |
+| James       | Marlow      |            50 | Shipping         |
+| TJ          | Olson       |            50 | Shipping         |
+| Jason       | Mallin      |            50 | Shipping         |
+| Michael     | Rogers      |            50 | Shipping         |
+| Ki          | Gee         |            50 | Shipping         |
+| Hazel       | Philtanker  |            50 | Shipping         |
+| Renske      | Ladwig      |            50 | Shipping         |
+| Stephen     | Stiles      |            50 | Shipping         |
+| John        | Seo         |            50 | Shipping         |
+| Joshua      | Patel       |            50 | Shipping         |
+| Trenna      | Rajs        |            50 | Shipping         |
+| Curtis      | Davies      |            50 | Shipping         |
+| Randall     | Matos       |            50 | Shipping         |
+| Peter       | Vargas      |            50 | Shipping         |
+| John        | Russell     |            80 | Sales            |
+| Karen       | Partners    |            80 | Sales            |
+| Alberto     | Errazuriz   |            80 | Sales            |
+| Gerald      | Cambrault   |            80 | Sales            |
+| Eleni       | Zlotkey     |            80 | Sales            |
+| Peter       | Tucker      |            80 | Sales            |
+| David       | Bernstein   |            80 | Sales            |
+| Peter       | Hall        |            80 | Sales            |
+| Christopher | Olsen       |            80 | Sales            |
+| Nanette     | Cambrault   |            80 | Sales            |
+| Oliver      | Tuvault     |            80 | Sales            |
+| Janette     | King        |            80 | Sales            |
+| Patrick     | Sully       |            80 | Sales            |
+| Allan       | McEwen      |            80 | Sales            |
+| Lindsey     | Smith       |            80 | Sales            |
+| Louise      | Doran       |            80 | Sales            |
+| Sarath      | Sewall      |            80 | Sales            |
+| Clara       | Vishney     |            80 | Sales            |
+| Danielle    | Greene      |            80 | Sales            |
+| Mattea      | Marvins     |            80 | Sales            |
+| David       | Lee         |            80 | Sales            |
+| Sundar      | Ande        |            80 | Sales            |
+| Amit        | Banda       |            80 | Sales            |
+| Lisa        | Ozer        |            80 | Sales            |
+| Harrison    | Bloom       |            80 | Sales            |
+| Tayler      | Fox         |            80 | Sales            |
+| William     | Smith       |            80 | Sales            |
+| Elizabeth   | Bates       |            80 | Sales            |
+| Sundita     | Kumar       |            80 | Sales            |
+| Ellen       | Abel        |            80 | Sales            |
+| Alyssa      | Hutton      |            80 | Sales            |
+| Jonathon    | Taylor      |            80 | Sales            |
+| Jack        | Livingston  |            80 | Sales            |
+| Kimberely   | Grant       |          NULL | NULL             |
+| Charles     | Johnson     |            80 | Sales            |
+| Winston     | Taylor      |            50 | Shipping         |
+| Jean        | Fleaur      |            50 | Shipping         |
+| Martha      | Sullivan    |            50 | Shipping         |
+| Girard      | Geoni       |            50 | Shipping         |
+| Nandita     | Sarchand    |            50 | Shipping         |
+| Alexis      | Bull        |            50 | Shipping         |
+| Julia       | Dellinger   |            50 | Shipping         |
+| Anthony     | Cabrio      |            50 | Shipping         |
+| Kelly       | Chung       |            50 | Shipping         |
+| Jennifer    | Dilly       |            50 | Shipping         |
+| Timothy     | Gates       |            50 | Shipping         |
+| Randall     | Perkins     |            50 | Shipping         |
+| Sarah       | Bell        |            50 | Shipping         |
+| Britney     | Everett     |            50 | Shipping         |
+| Samuel      | McCain      |            50 | Shipping         |
+| Vance       | Jones       |            50 | Shipping         |
+| Alana       | Walsh       |            50 | Shipping         |
+| Kevin       | Feeney      |            50 | Shipping         |
+| Donald      | OConnell    |            50 | Shipping         |
+| Douglas     | Grant       |            50 | Shipping         |
+| Jennifer    | Whalen      |            10 | Administration   |
+| Michael     | Hartstein   |            20 | Marketing        |
+| Pat         | Fay         |            20 | Marketing        |
+| Susan       | Mavris      |            40 | Human Resources  |
+| Hermann     | Baer        |            70 | Public Relations |
+| Shelley     | Higgins     |           110 | Accounting       |
+| William     | Gietz       |           110 | Accounting       |
++-------------+-------------+---------------+------------------+
+107 rows in set (0.004 sec)
+
+MariaDB [hr086]> SELECT E.first_name, E.last_name, D.department_id, D.department_name
+    -> FROM employees E
+    -> RIGHT OUTER JOIN departments D
+    -> ON E.department_id = D.department_id;
++-------------+-------------+---------------+----------------------+
+| first_name  | last_name   | department_id | department_name      |
++-------------+-------------+---------------+----------------------+
+| Jennifer    | Whalen      |            10 | Administration       |
+| Michael     | Hartstein   |            20 | Marketing            |
+| Pat         | Fay         |            20 | Marketing            |
+| Den         | Raphaely    |            30 | Purchasing           |
+| Alexander   | Khoo        |            30 | Purchasing           |
+| Shelli      | Baida       |            30 | Purchasing           |
+| Sigal       | Tobias      |            30 | Purchasing           |
+| Guy         | Himuro      |            30 | Purchasing           |
+| Karen       | Colmenares  |            30 | Purchasing           |
+| Susan       | Mavris      |            40 | Human Resources      |
+| Matthew     | Weiss       |            50 | Shipping             |
+| Adam        | Fripp       |            50 | Shipping             |
+| Payam       | Kaufling    |            50 | Shipping             |
+| Shanta      | Vollman     |            50 | Shipping             |
+| Kevin       | Mourgos     |            50 | Shipping             |
+| Julia       | Nayer       |            50 | Shipping             |
+| Irene       | Mikkilineni |            50 | Shipping             |
+| James       | Landry      |            50 | Shipping             |
+| Steven      | Markle      |            50 | Shipping             |
+| Laura       | Bissot      |            50 | Shipping             |
+| Mozhe       | Atkinson    |            50 | Shipping             |
+| James       | Marlow      |            50 | Shipping             |
+| TJ          | Olson       |            50 | Shipping             |
+| Jason       | Mallin      |            50 | Shipping             |
+| Michael     | Rogers      |            50 | Shipping             |
+| Ki          | Gee         |            50 | Shipping             |
+| Hazel       | Philtanker  |            50 | Shipping             |
+| Renske      | Ladwig      |            50 | Shipping             |
+| Stephen     | Stiles      |            50 | Shipping             |
+| John        | Seo         |            50 | Shipping             |
+| Joshua      | Patel       |            50 | Shipping             |
+| Trenna      | Rajs        |            50 | Shipping             |
+| Curtis      | Davies      |            50 | Shipping             |
+| Randall     | Matos       |            50 | Shipping             |
+| Peter       | Vargas      |            50 | Shipping             |
+| Winston     | Taylor      |            50 | Shipping             |
+| Jean        | Fleaur      |            50 | Shipping             |
+| Martha      | Sullivan    |            50 | Shipping             |
+| Girard      | Geoni       |            50 | Shipping             |
+| Nandita     | Sarchand    |            50 | Shipping             |
+| Alexis      | Bull        |            50 | Shipping             |
+| Julia       | Dellinger   |            50 | Shipping             |
+| Anthony     | Cabrio      |            50 | Shipping             |
+| Kelly       | Chung       |            50 | Shipping             |
+| Jennifer    | Dilly       |            50 | Shipping             |
+| Timothy     | Gates       |            50 | Shipping             |
+| Randall     | Perkins     |            50 | Shipping             |
+| Sarah       | Bell        |            50 | Shipping             |
+| Britney     | Everett     |            50 | Shipping             |
+| Samuel      | McCain      |            50 | Shipping             |
+| Vance       | Jones       |            50 | Shipping             |
+| Alana       | Walsh       |            50 | Shipping             |
+| Kevin       | Feeney      |            50 | Shipping             |
+| Donald      | OConnell    |            50 | Shipping             |
+| Douglas     | Grant       |            50 | Shipping             |
+| Alexander   | Hunold      |            60 | IT                   |
+| Bruce       | Ernst       |            60 | IT                   |
+| David       | Austin      |            60 | IT                   |
+| Valli       | Pataballa   |            60 | IT                   |
+| Diana       | Lorentz     |            60 | IT                   |
+| Hermann     | Baer        |            70 | Public Relations     |
+| John        | Russell     |            80 | Sales                |
+| Karen       | Partners    |            80 | Sales                |
+| Alberto     | Errazuriz   |            80 | Sales                |
+| Gerald      | Cambrault   |            80 | Sales                |
+| Eleni       | Zlotkey     |            80 | Sales                |
+| Peter       | Tucker      |            80 | Sales                |
+| David       | Bernstein   |            80 | Sales                |
+| Peter       | Hall        |            80 | Sales                |
+| Christopher | Olsen       |            80 | Sales                |
+| Nanette     | Cambrault   |            80 | Sales                |
+| Oliver      | Tuvault     |            80 | Sales                |
+| Janette     | King        |            80 | Sales                |
+| Patrick     | Sully       |            80 | Sales                |
+| Allan       | McEwen      |            80 | Sales                |
+| Lindsey     | Smith       |            80 | Sales                |
+| Louise      | Doran       |            80 | Sales                |
+| Sarath      | Sewall      |            80 | Sales                |
+| Clara       | Vishney     |            80 | Sales                |
+| Danielle    | Greene      |            80 | Sales                |
+| Mattea      | Marvins     |            80 | Sales                |
+| David       | Lee         |            80 | Sales                |
+| Sundar      | Ande        |            80 | Sales                |
+| Amit        | Banda       |            80 | Sales                |
+| Lisa        | Ozer        |            80 | Sales                |
+| Harrison    | Bloom       |            80 | Sales                |
+| Tayler      | Fox         |            80 | Sales                |
+| William     | Smith       |            80 | Sales                |
+| Elizabeth   | Bates       |            80 | Sales                |
+| Sundita     | Kumar       |            80 | Sales                |
+| Ellen       | Abel        |            80 | Sales                |
+| Alyssa      | Hutton      |            80 | Sales                |
+| Jonathon    | Taylor      |            80 | Sales                |
+| Jack        | Livingston  |            80 | Sales                |
+| Charles     | Johnson     |            80 | Sales                |
+| Steven      | King        |            90 | Executive            |
+| Neena       | Kochhar     |            90 | Executive            |
+| Lex         | De Haan     |            90 | Executive            |
+| Nancy       | Greenberg   |           100 | Finance              |
+| Daniel      | Faviet      |           100 | Finance              |
+| John        | Chen        |           100 | Finance              |
+| Ismael      | Sciarra     |           100 | Finance              |
+| Jose Manuel | Urman       |           100 | Finance              |
+| Luis        | Popp        |           100 | Finance              |
+| Shelley     | Higgins     |           110 | Accounting           |
+| William     | Gietz       |           110 | Accounting           |
+| NULL        | NULL        |           120 | Treasury             |
+| NULL        | NULL        |           130 | Corporate Tax        |
+| NULL        | NULL        |           140 | Control And Credit   |
+| NULL        | NULL        |           150 | Shareholder Services |
+| NULL        | NULL        |           160 | Benefits             |
+| NULL        | NULL        |           170 | Manufacturing        |
+| NULL        | NULL        |           180 | Construction         |
+| NULL        | NULL        |           190 | Contracting          |
+| NULL        | NULL        |           200 | Operations           |
+| NULL        | NULL        |           210 | IT Support           |
+| NULL        | NULL        |           220 | NOC                  |
+| NULL        | NULL        |           230 | IT Helpdesk          |
+| NULL        | NULL        |           240 | Government Sales     |
+| NULL        | NULL        |           250 | Retail Sales         |
+| NULL        | NULL        |           260 | Recruiting           |
+| NULL        | NULL        |           270 | Payroll              |
++-------------+-------------+---------------+----------------------+
+122 rows in set (0.002 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, e.department_id, d.department_name
+    -> FROM employees e
+    -> LEFT JOIN departments d ON e.department_id = d.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Steven      | King        |            90 | Executive        |
+| Neena       | Kochhar     |            90 | Executive        |
+| Lex         | De Haan     |            90 | Executive        |
+| Alexander   | Hunold      |            60 | IT               |
+| Bruce       | Ernst       |            60 | IT               |
+| David       | Austin      |            60 | IT               |
+| Valli       | Pataballa   |            60 | IT               |
+| Diana       | Lorentz     |            60 | IT               |
+| Nancy       | Greenberg   |           100 | Finance          |
+| Daniel      | Faviet      |           100 | Finance          |
+| John        | Chen        |           100 | Finance          |
+| Ismael      | Sciarra     |           100 | Finance          |
+| Jose Manuel | Urman       |           100 | Finance          |
+| Luis        | Popp        |           100 | Finance          |
+| Den         | Raphaely    |            30 | Purchasing       |
+| Alexander   | Khoo        |            30 | Purchasing       |
+| Shelli      | Baida       |            30 | Purchasing       |
+| Sigal       | Tobias      |            30 | Purchasing       |
+| Guy         | Himuro      |            30 | Purchasing       |
+| Karen       | Colmenares  |            30 | Purchasing       |
+| Matthew     | Weiss       |            50 | Shipping         |
+| Adam        | Fripp       |            50 | Shipping         |
+| Payam       | Kaufling    |            50 | Shipping         |
+| Shanta      | Vollman     |            50 | Shipping         |
+| Kevin       | Mourgos     |            50 | Shipping         |
+| Julia       | Nayer       |            50 | Shipping         |
+| Irene       | Mikkilineni |            50 | Shipping         |
+| James       | Landry      |            50 | Shipping         |
+| Steven      | Markle      |            50 | Shipping         |
+| Laura       | Bissot      |            50 | Shipping         |
+| Mozhe       | Atkinson    |            50 | Shipping         |
+| James       | Marlow      |            50 | Shipping         |
+| TJ          | Olson       |            50 | Shipping         |
+| Jason       | Mallin      |            50 | Shipping         |
+| Michael     | Rogers      |            50 | Shipping         |
+| Ki          | Gee         |            50 | Shipping         |
+| Hazel       | Philtanker  |            50 | Shipping         |
+| Renske      | Ladwig      |            50 | Shipping         |
+| Stephen     | Stiles      |            50 | Shipping         |
+| John        | Seo         |            50 | Shipping         |
+| Joshua      | Patel       |            50 | Shipping         |
+| Trenna      | Rajs        |            50 | Shipping         |
+| Curtis      | Davies      |            50 | Shipping         |
+| Randall     | Matos       |            50 | Shipping         |
+| Peter       | Vargas      |            50 | Shipping         |
+| John        | Russell     |            80 | Sales            |
+| Karen       | Partners    |            80 | Sales            |
+| Alberto     | Errazuriz   |            80 | Sales            |
+| Gerald      | Cambrault   |            80 | Sales            |
+| Eleni       | Zlotkey     |            80 | Sales            |
+| Peter       | Tucker      |            80 | Sales            |
+| David       | Bernstein   |            80 | Sales            |
+| Peter       | Hall        |            80 | Sales            |
+| Christopher | Olsen       |            80 | Sales            |
+| Nanette     | Cambrault   |            80 | Sales            |
+| Oliver      | Tuvault     |            80 | Sales            |
+| Janette     | King        |            80 | Sales            |
+| Patrick     | Sully       |            80 | Sales            |
+| Allan       | McEwen      |            80 | Sales            |
+| Lindsey     | Smith       |            80 | Sales            |
+| Louise      | Doran       |            80 | Sales            |
+| Sarath      | Sewall      |            80 | Sales            |
+| Clara       | Vishney     |            80 | Sales            |
+| Danielle    | Greene      |            80 | Sales            |
+| Mattea      | Marvins     |            80 | Sales            |
+| David       | Lee         |            80 | Sales            |
+| Sundar      | Ande        |            80 | Sales            |
+| Amit        | Banda       |            80 | Sales            |
+| Lisa        | Ozer        |            80 | Sales            |
+| Harrison    | Bloom       |            80 | Sales            |
+| Tayler      | Fox         |            80 | Sales            |
+| William     | Smith       |            80 | Sales            |
+| Elizabeth   | Bates       |            80 | Sales            |
+| Sundita     | Kumar       |            80 | Sales            |
+| Ellen       | Abel        |            80 | Sales            |
+| Alyssa      | Hutton      |            80 | Sales            |
+| Jonathon    | Taylor      |            80 | Sales            |
+| Jack        | Livingston  |            80 | Sales            |
+| Kimberely   | Grant       |          NULL | NULL             |
+| Charles     | Johnson     |            80 | Sales            |
+| Winston     | Taylor      |            50 | Shipping         |
+| Jean        | Fleaur      |            50 | Shipping         |
+| Martha      | Sullivan    |            50 | Shipping         |
+| Girard      | Geoni       |            50 | Shipping         |
+| Nandita     | Sarchand    |            50 | Shipping         |
+| Alexis      | Bull        |            50 | Shipping         |
+| Julia       | Dellinger   |            50 | Shipping         |
+| Anthony     | Cabrio      |            50 | Shipping         |
+| Kelly       | Chung       |            50 | Shipping         |
+| Jennifer    | Dilly       |            50 | Shipping         |
+| Timothy     | Gates       |            50 | Shipping         |
+| Randall     | Perkins     |            50 | Shipping         |
+| Sarah       | Bell        |            50 | Shipping         |
+| Britney     | Everett     |            50 | Shipping         |
+| Samuel      | McCain      |            50 | Shipping         |
+| Vance       | Jones       |            50 | Shipping         |
+| Alana       | Walsh       |            50 | Shipping         |
+| Kevin       | Feeney      |            50 | Shipping         |
+| Donald      | OConnell    |            50 | Shipping         |
+| Douglas     | Grant       |            50 | Shipping         |
+| Jennifer    | Whalen      |            10 | Administration   |
+| Michael     | Hartstein   |            20 | Marketing        |
+| Pat         | Fay         |            20 | Marketing        |
+| Susan       | Mavris      |            40 | Human Resources  |
+| Hermann     | Baer        |            70 | Public Relations |
+| Shelley     | Higgins     |           110 | Accounting       |
+| William     | Gietz       |           110 | Accounting       |
++-------------+-------------+---------------+------------------+
+107 rows in set (0.011 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, d.department_name, l.city, l.state_province
+    -> FROM employees e
+    -> LEFT JOIN departments d ON e.department_id = d.department_id
+    -> LEFT JOIN locations l ON d.location_id = l.location_id;
++-------------+-------------+------------------+---------------------+----------------+
+| first_name  | last_name   | department_name  | city                | state_province |
++-------------+-------------+------------------+---------------------+----------------+
+| Steven      | King        | Executive        | Seattle             | Washington     |
+| Neena       | Kochhar     | Executive        | Seattle             | Washington     |
+| Lex         | De Haan     | Executive        | Seattle             | Washington     |
+| Alexander   | Hunold      | IT               | Southlake           | Texas          |
+| Bruce       | Ernst       | IT               | Southlake           | Texas          |
+| David       | Austin      | IT               | Southlake           | Texas          |
+| Valli       | Pataballa   | IT               | Southlake           | Texas          |
+| Diana       | Lorentz     | IT               | Southlake           | Texas          |
+| Nancy       | Greenberg   | Finance          | Seattle             | Washington     |
+| Daniel      | Faviet      | Finance          | Seattle             | Washington     |
+| John        | Chen        | Finance          | Seattle             | Washington     |
+| Ismael      | Sciarra     | Finance          | Seattle             | Washington     |
+| Jose Manuel | Urman       | Finance          | Seattle             | Washington     |
+| Luis        | Popp        | Finance          | Seattle             | Washington     |
+| Den         | Raphaely    | Purchasing       | Seattle             | Washington     |
+| Alexander   | Khoo        | Purchasing       | Seattle             | Washington     |
+| Shelli      | Baida       | Purchasing       | Seattle             | Washington     |
+| Sigal       | Tobias      | Purchasing       | Seattle             | Washington     |
+| Guy         | Himuro      | Purchasing       | Seattle             | Washington     |
+| Karen       | Colmenares  | Purchasing       | Seattle             | Washington     |
+| Matthew     | Weiss       | Shipping         | South San Francisco | California     |
+| Adam        | Fripp       | Shipping         | South San Francisco | California     |
+| Payam       | Kaufling    | Shipping         | South San Francisco | California     |
+| Shanta      | Vollman     | Shipping         | South San Francisco | California     |
+| Kevin       | Mourgos     | Shipping         | South San Francisco | California     |
+| Julia       | Nayer       | Shipping         | South San Francisco | California     |
+| Irene       | Mikkilineni | Shipping         | South San Francisco | California     |
+| James       | Landry      | Shipping         | South San Francisco | California     |
+| Steven      | Markle      | Shipping         | South San Francisco | California     |
+| Laura       | Bissot      | Shipping         | South San Francisco | California     |
+| Mozhe       | Atkinson    | Shipping         | South San Francisco | California     |
+| James       | Marlow      | Shipping         | South San Francisco | California     |
+| TJ          | Olson       | Shipping         | South San Francisco | California     |
+| Jason       | Mallin      | Shipping         | South San Francisco | California     |
+| Michael     | Rogers      | Shipping         | South San Francisco | California     |
+| Ki          | Gee         | Shipping         | South San Francisco | California     |
+| Hazel       | Philtanker  | Shipping         | South San Francisco | California     |
+| Renske      | Ladwig      | Shipping         | South San Francisco | California     |
+| Stephen     | Stiles      | Shipping         | South San Francisco | California     |
+| John        | Seo         | Shipping         | South San Francisco | California     |
+| Joshua      | Patel       | Shipping         | South San Francisco | California     |
+| Trenna      | Rajs        | Shipping         | South San Francisco | California     |
+| Curtis      | Davies      | Shipping         | South San Francisco | California     |
+| Randall     | Matos       | Shipping         | South San Francisco | California     |
+| Peter       | Vargas      | Shipping         | South San Francisco | California     |
+| John        | Russell     | Sales            | Oxford              | Oxford         |
+| Karen       | Partners    | Sales            | Oxford              | Oxford         |
+| Alberto     | Errazuriz   | Sales            | Oxford              | Oxford         |
+| Gerald      | Cambrault   | Sales            | Oxford              | Oxford         |
+| Eleni       | Zlotkey     | Sales            | Oxford              | Oxford         |
+| Peter       | Tucker      | Sales            | Oxford              | Oxford         |
+| David       | Bernstein   | Sales            | Oxford              | Oxford         |
+| Peter       | Hall        | Sales            | Oxford              | Oxford         |
+| Christopher | Olsen       | Sales            | Oxford              | Oxford         |
+| Nanette     | Cambrault   | Sales            | Oxford              | Oxford         |
+| Oliver      | Tuvault     | Sales            | Oxford              | Oxford         |
+| Janette     | King        | Sales            | Oxford              | Oxford         |
+| Patrick     | Sully       | Sales            | Oxford              | Oxford         |
+| Allan       | McEwen      | Sales            | Oxford              | Oxford         |
+| Lindsey     | Smith       | Sales            | Oxford              | Oxford         |
+| Louise      | Doran       | Sales            | Oxford              | Oxford         |
+| Sarath      | Sewall      | Sales            | Oxford              | Oxford         |
+| Clara       | Vishney     | Sales            | Oxford              | Oxford         |
+| Danielle    | Greene      | Sales            | Oxford              | Oxford         |
+| Mattea      | Marvins     | Sales            | Oxford              | Oxford         |
+| David       | Lee         | Sales            | Oxford              | Oxford         |
+| Sundar      | Ande        | Sales            | Oxford              | Oxford         |
+| Amit        | Banda       | Sales            | Oxford              | Oxford         |
+| Lisa        | Ozer        | Sales            | Oxford              | Oxford         |
+| Harrison    | Bloom       | Sales            | Oxford              | Oxford         |
+| Tayler      | Fox         | Sales            | Oxford              | Oxford         |
+| William     | Smith       | Sales            | Oxford              | Oxford         |
+| Elizabeth   | Bates       | Sales            | Oxford              | Oxford         |
+| Sundita     | Kumar       | Sales            | Oxford              | Oxford         |
+| Ellen       | Abel        | Sales            | Oxford              | Oxford         |
+| Alyssa      | Hutton      | Sales            | Oxford              | Oxford         |
+| Jonathon    | Taylor      | Sales            | Oxford              | Oxford         |
+| Jack        | Livingston  | Sales            | Oxford              | Oxford         |
+| Kimberely   | Grant       | NULL             | NULL                | NULL           |
+| Charles     | Johnson     | Sales            | Oxford              | Oxford         |
+| Winston     | Taylor      | Shipping         | South San Francisco | California     |
+| Jean        | Fleaur      | Shipping         | South San Francisco | California     |
+| Martha      | Sullivan    | Shipping         | South San Francisco | California     |
+| Girard      | Geoni       | Shipping         | South San Francisco | California     |
+| Nandita     | Sarchand    | Shipping         | South San Francisco | California     |
+| Alexis      | Bull        | Shipping         | South San Francisco | California     |
+| Julia       | Dellinger   | Shipping         | South San Francisco | California     |
+| Anthony     | Cabrio      | Shipping         | South San Francisco | California     |
+| Kelly       | Chung       | Shipping         | South San Francisco | California     |
+| Jennifer    | Dilly       | Shipping         | South San Francisco | California     |
+| Timothy     | Gates       | Shipping         | South San Francisco | California     |
+| Randall     | Perkins     | Shipping         | South San Francisco | California     |
+| Sarah       | Bell        | Shipping         | South San Francisco | California     |
+| Britney     | Everett     | Shipping         | South San Francisco | California     |
+| Samuel      | McCain      | Shipping         | South San Francisco | California     |
+| Vance       | Jones       | Shipping         | South San Francisco | California     |
+| Alana       | Walsh       | Shipping         | South San Francisco | California     |
+| Kevin       | Feeney      | Shipping         | South San Francisco | California     |
+| Donald      | OConnell    | Shipping         | South San Francisco | California     |
+| Douglas     | Grant       | Shipping         | South San Francisco | California     |
+| Jennifer    | Whalen      | Administration   | Seattle             | Washington     |
+| Michael     | Hartstein   | Marketing        | Toronto             | Ontario        |
+| Pat         | Fay         | Marketing        | Toronto             | Ontario        |
+| Susan       | Mavris      | Human Resources  | London              | NULL           |
+| Hermann     | Baer        | Public Relations | Munich              | Bavaria        |
+| Shelley     | Higgins     | Accounting       | Seattle             | Washington     |
+| William     | Gietz       | Accounting       | Seattle             | Washington     |
++-------------+-------------+------------------+---------------------+----------------+
+107 rows in set (0.017 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, e.department_id, d.department_name
+    -> FROM employees e
+    -> JOIN departments d ON e.department_id = d.department_id
+    -> WHERE e.department_id IN (80, 40);
++-------------+------------+---------------+-----------------+
+| first_name  | last_name  | department_id | department_name |
++-------------+------------+---------------+-----------------+
+| John        | Russell    |            80 | Sales           |
+| Karen       | Partners   |            80 | Sales           |
+| Alberto     | Errazuriz  |            80 | Sales           |
+| Gerald      | Cambrault  |            80 | Sales           |
+| Eleni       | Zlotkey    |            80 | Sales           |
+| Peter       | Tucker     |            80 | Sales           |
+| David       | Bernstein  |            80 | Sales           |
+| Peter       | Hall       |            80 | Sales           |
+| Christopher | Olsen      |            80 | Sales           |
+| Nanette     | Cambrault  |            80 | Sales           |
+| Oliver      | Tuvault    |            80 | Sales           |
+| Janette     | King       |            80 | Sales           |
+| Patrick     | Sully      |            80 | Sales           |
+| Allan       | McEwen     |            80 | Sales           |
+| Lindsey     | Smith      |            80 | Sales           |
+| Louise      | Doran      |            80 | Sales           |
+| Sarath      | Sewall     |            80 | Sales           |
+| Clara       | Vishney    |            80 | Sales           |
+| Danielle    | Greene     |            80 | Sales           |
+| Mattea      | Marvins    |            80 | Sales           |
+| David       | Lee        |            80 | Sales           |
+| Sundar      | Ande       |            80 | Sales           |
+| Amit        | Banda      |            80 | Sales           |
+| Lisa        | Ozer       |            80 | Sales           |
+| Harrison    | Bloom      |            80 | Sales           |
+| Tayler      | Fox        |            80 | Sales           |
+| William     | Smith      |            80 | Sales           |
+| Elizabeth   | Bates      |            80 | Sales           |
+| Sundita     | Kumar      |            80 | Sales           |
+| Ellen       | Abel       |            80 | Sales           |
+| Alyssa      | Hutton     |            80 | Sales           |
+| Jonathon    | Taylor     |            80 | Sales           |
+| Jack        | Livingston |            80 | Sales           |
+| Charles     | Johnson    |            80 | Sales           |
+| Susan       | Mavris     |            40 | Human Resources |
++-------------+------------+---------------+-----------------+
+35 rows in set (0.007 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, d.department_name, l.city, l.state_province
+    -> FROM employees e
+    -> LEFT JOIN departments d ON e.department_id = d.department_id
+    -> LEFT JOIN locations l ON d.location_id = l.location_id
+    -> WHERE e.first_name LIKE 'Z%';
+Empty set (0.002 sec)
+
+MariaDB [hr086]> SELECT d.department_id, d.department_name, e.first_name, e.last_name
+    -> FROM departments d
+    -> LEFT JOIN employees e ON d.department_id = e.department_id
+    -> WHERE e.employee_id IS NULL;
++---------------+----------------------+------------+-----------+
+| department_id | department_name      | first_name | last_name |
++---------------+----------------------+------------+-----------+
+|           120 | Treasury             | NULL       | NULL      |
+|           130 | Corporate Tax        | NULL       | NULL      |
+|           140 | Control And Credit   | NULL       | NULL      |
+|           150 | Shareholder Services | NULL       | NULL      |
+|           160 | Benefits             | NULL       | NULL      |
+|           170 | Manufacturing        | NULL       | NULL      |
+|           180 | Construction         | NULL       | NULL      |
+|           190 | Contracting          | NULL       | NULL      |
+|           200 | Operations           | NULL       | NULL      |
+|           210 | IT Support           | NULL       | NULL      |
+|           220 | NOC                  | NULL       | NULL      |
+|           230 | IT Helpdesk          | NULL       | NULL      |
+|           240 | Government Sales     | NULL       | NULL      |
+|           250 | Retail Sales         | NULL       | NULL      |
+|           260 | Recruiting           | NULL       | NULL      |
+|           270 | Payroll              | NULL       | NULL      |
++---------------+----------------------+------------+-----------+
+16 rows in set (0.002 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, e.salary
+    -> FROM employees e
+    -> WHERE e.salary < (
+    ->     SELECT salary
+    ->     FROM employees
+    ->     WHERE employee_id = 182
+    -> );
++------------+------------+---------+
+| first_name | last_name  | salary  |
++------------+------------+---------+
+| James      | Landry     | 2400.00 |
+| Steven     | Markle     | 2200.00 |
+| TJ         | Olson      | 2100.00 |
+| Ki         | Gee        | 2400.00 |
+| Hazel      | Philtanker | 2200.00 |
++------------+------------+---------+
+5 rows in set (0.006 sec)
+
+MariaDB [hr086]> SELECT e.first_name AS employee_name, m.first_name AS manager_name
+    -> FROM employees e
+    -> LEFT JOIN employees m ON e.manager_id = m.employee_id;
++---------------+--------------+
+| employee_name | manager_name |
++---------------+--------------+
+| Steven        | NULL         |
+| Neena         | Steven       |
+| Lex           | Steven       |
+| Alexander     | Lex          |
+| Bruce         | Alexander    |
+| David         | Alexander    |
+| Valli         | Alexander    |
+| Diana         | Alexander    |
+| Nancy         | Neena        |
+| Daniel        | Nancy        |
+| John          | Nancy        |
+| Ismael        | Nancy        |
+| Jose Manuel   | Nancy        |
+| Luis          | Nancy        |
+| Den           | Steven       |
+| Alexander     | Den          |
+| Shelli        | Den          |
+| Sigal         | Den          |
+| Guy           | Den          |
+| Karen         | Den          |
+| Matthew       | Steven       |
+| Adam          | Steven       |
+| Payam         | Steven       |
+| Shanta        | Steven       |
+| Kevin         | Steven       |
+| Julia         | Matthew      |
+| Irene         | Matthew      |
+| James         | Matthew      |
+| Steven        | Matthew      |
+| Laura         | Adam         |
+| Mozhe         | Adam         |
+| James         | Adam         |
+| TJ            | Adam         |
+| Jason         | Payam        |
+| Michael       | Payam        |
+| Ki            | Payam        |
+| Hazel         | Payam        |
+| Renske        | Shanta       |
+| Stephen       | Shanta       |
+| John          | Shanta       |
+| Joshua        | Shanta       |
+| Trenna        | Kevin        |
+| Curtis        | Kevin        |
+| Randall       | Kevin        |
+| Peter         | Kevin        |
+| John          | Steven       |
+| Karen         | Steven       |
+| Alberto       | Steven       |
+| Gerald        | Steven       |
+| Eleni         | Steven       |
+| Peter         | John         |
+| David         | John         |
+| Peter         | John         |
+| Christopher   | John         |
+| Nanette       | John         |
+| Oliver        | John         |
+| Janette       | Karen        |
+| Patrick       | Karen        |
+| Allan         | Karen        |
+| Lindsey       | Karen        |
+| Louise        | Karen        |
+| Sarath        | Karen        |
+| Clara         | Alberto      |
+| Danielle      | Alberto      |
+| Mattea        | Alberto      |
+| David         | Alberto      |
+| Sundar        | Alberto      |
+| Amit          | Alberto      |
+| Lisa          | Gerald       |
+| Harrison      | Gerald       |
+| Tayler        | Gerald       |
+| William       | Gerald       |
+| Elizabeth     | Gerald       |
+| Sundita       | Gerald       |
+| Ellen         | Eleni        |
+| Alyssa        | Eleni        |
+| Jonathon      | Eleni        |
+| Jack          | Eleni        |
+| Kimberely     | Eleni        |
+| Charles       | Eleni        |
+| Winston       | Matthew      |
+| Jean          | Matthew      |
+| Martha        | Matthew      |
+| Girard        | Matthew      |
+| Nandita       | Adam         |
+| Alexis        | Adam         |
+| Julia         | Adam         |
+| Anthony       | Adam         |
+| Kelly         | Payam        |
+| Jennifer      | Payam        |
+| Timothy       | Payam        |
+| Randall       | Payam        |
+| Sarah         | Shanta       |
+| Britney       | Shanta       |
+| Samuel        | Shanta       |
+| Vance         | Shanta       |
+| Alana         | Kevin        |
+| Kevin         | Kevin        |
+| Donald        | Kevin        |
+| Douglas       | Kevin        |
+| Jennifer      | Neena        |
+| Michael       | Steven       |
+| Pat           | Michael      |
+| Susan         | Neena        |
+| Hermann       | Neena        |
+| Shelley       | Neena        |
+| William       | Shelley      |
++---------------+--------------+
+107 rows in set (0.001 sec)
+
+MariaDB [hr086]> SELECT d.department_name, l.city, l.state_province
+    -> FROM departments d
+    -> LEFT JOIN locations l ON d.location_id = l.location_id;
++----------------------+---------------------+----------------+
+| department_name      | city                | state_province |
++----------------------+---------------------+----------------+
+| Administration       | Seattle             | Washington     |
+| Marketing            | Toronto             | Ontario        |
+| Purchasing           | Seattle             | Washington     |
+| Human Resources      | London              | NULL           |
+| Shipping             | South San Francisco | California     |
+| IT                   | Southlake           | Texas          |
+| Public Relations     | Munich              | Bavaria        |
+| Sales                | Oxford              | Oxford         |
+| Executive            | Seattle             | Washington     |
+| Finance              | Seattle             | Washington     |
+| Accounting           | Seattle             | Washington     |
+| Treasury             | Seattle             | Washington     |
+| Corporate Tax        | Seattle             | Washington     |
+| Control And Credit   | Seattle             | Washington     |
+| Shareholder Services | Seattle             | Washington     |
+| Benefits             | Seattle             | Washington     |
+| Manufacturing        | Seattle             | Washington     |
+| Construction         | Seattle             | Washington     |
+| Contracting          | Seattle             | Washington     |
+| Operations           | Seattle             | Washington     |
+| IT Support           | Seattle             | Washington     |
+| NOC                  | Seattle             | Washington     |
+| IT Helpdesk          | Seattle             | Washington     |
+| Government Sales     | Seattle             | Washington     |
+| Retail Sales         | Seattle             | Washington     |
+| Recruiting           | Seattle             | Washington     |
+| Payroll              | Seattle             | Washington     |
++----------------------+---------------------+----------------+
+27 rows in set (0.001 sec)
+
+MariaDB [hr086]> SELECT e.first_name, e.last_name, e.department_id, d.department_name
+    -> FROM employees e
+    -> LEFT JOIN departments d ON e.department_id = d.department_id;
++-------------+-------------+---------------+------------------+
+| first_name  | last_name   | department_id | department_name  |
++-------------+-------------+---------------+------------------+
+| Steven      | King        |            90 | Executive        |
+| Neena       | Kochhar     |            90 | Executive        |
+| Lex         | De Haan     |            90 | Executive        |
+| Alexander   | Hunold      |            60 | IT               |
+| Bruce       | Ernst       |            60 | IT               |
+| David       | Austin      |            60 | IT               |
+| Valli       | Pataballa   |            60 | IT               |
+| Diana       | Lorentz     |            60 | IT               |
+| Nancy       | Greenberg   |           100 | Finance          |
+| Daniel      | Faviet      |           100 | Finance          |
+| John        | Chen        |           100 | Finance          |
+| Ismael      | Sciarra     |           100 | Finance          |
+| Jose Manuel | Urman       |           100 | Finance          |
+| Luis        | Popp        |           100 | Finance          |
+| Den         | Raphaely    |            30 | Purchasing       |
+| Alexander   | Khoo        |            30 | Purchasing       |
+| Shelli      | Baida       |            30 | Purchasing       |
+| Sigal       | Tobias      |            30 | Purchasing       |
+| Guy         | Himuro      |            30 | Purchasing       |
+| Karen       | Colmenares  |            30 | Purchasing       |
+| Matthew     | Weiss       |            50 | Shipping         |
+| Adam        | Fripp       |            50 | Shipping         |
+| Payam       | Kaufling    |            50 | Shipping         |
+| Shanta      | Vollman     |            50 | Shipping         |
+| Kevin       | Mourgos     |            50 | Shipping         |
+| Julia       | Nayer       |            50 | Shipping         |
+| Irene       | Mikkilineni |            50 | Shipping         |
+| James       | Landry      |            50 | Shipping         |
+| Steven      | Markle      |            50 | Shipping         |
+| Laura       | Bissot      |            50 | Shipping         |
+| Mozhe       | Atkinson    |            50 | Shipping         |
+| James       | Marlow      |            50 | Shipping         |
+| TJ          | Olson       |            50 | Shipping         |
+| Jason       | Mallin      |            50 | Shipping         |
+| Michael     | Rogers      |            50 | Shipping         |
+| Ki          | Gee         |            50 | Shipping         |
+| Hazel       | Philtanker  |            50 | Shipping         |
+| Renske      | Ladwig      |            50 | Shipping         |
+| Stephen     | Stiles      |            50 | Shipping         |
+| John        | Seo         |            50 | Shipping         |
+| Joshua      | Patel       |            50 | Shipping         |
+| Trenna      | Rajs        |            50 | Shipping         |
+| Curtis      | Davies      |            50 | Shipping         |
+| Randall     | Matos       |            50 | Shipping         |
+| Peter       | Vargas      |            50 | Shipping         |
+| John        | Russell     |            80 | Sales            |
+| Karen       | Partners    |            80 | Sales            |
+| Alberto     | Errazuriz   |            80 | Sales            |
+| Gerald      | Cambrault   |            80 | Sales            |
+| Eleni       | Zlotkey     |            80 | Sales            |
+| Peter       | Tucker      |            80 | Sales            |
+| David       | Bernstein   |            80 | Sales            |
+| Peter       | Hall        |            80 | Sales            |
+| Christopher | Olsen       |            80 | Sales            |
+| Nanette     | Cambrault   |            80 | Sales            |
+| Oliver      | Tuvault     |            80 | Sales            |
+| Janette     | King        |            80 | Sales            |
+| Patrick     | Sully       |            80 | Sales            |
+| Allan       | McEwen      |            80 | Sales            |
+| Lindsey     | Smith       |            80 | Sales            |
+| Louise      | Doran       |            80 | Sales            |
+| Sarath      | Sewall      |            80 | Sales            |
+| Clara       | Vishney     |            80 | Sales            |
+| Danielle    | Greene      |            80 | Sales            |
+| Mattea      | Marvins     |            80 | Sales            |
+| David       | Lee         |            80 | Sales            |
+| Sundar      | Ande        |            80 | Sales            |
+| Amit        | Banda       |            80 | Sales            |
+| Lisa        | Ozer        |            80 | Sales            |
+| Harrison    | Bloom       |            80 | Sales            |
+| Tayler      | Fox         |            80 | Sales            |
+| William     | Smith       |            80 | Sales            |
+| Elizabeth   | Bates       |            80 | Sales            |
+| Sundita     | Kumar       |            80 | Sales            |
+| Ellen       | Abel        |            80 | Sales            |
+| Alyssa      | Hutton      |            80 | Sales            |
+| Jonathon    | Taylor      |            80 | Sales            |
+| Jack        | Livingston  |            80 | Sales            |
+| Kimberely   | Grant       |          NULL | NULL             |
+| Charles     | Johnson     |            80 | Sales            |
+| Winston     | Taylor      |            50 | Shipping         |
+| Jean        | Fleaur      |            50 | Shipping         |
+| Martha      | Sullivan    |            50 | Shipping         |
+| Girard      | Geoni       |            50 | Shipping         |
+| Nandita     | Sarchand    |            50 | Shipping         |
+| Alexis      | Bull        |            50 | Shipping         |
+| Julia       | Dellinger   |            50 | Shipping         |
+| Anthony     | Cabrio      |            50 | Shipping         |
+| Kelly       | Chung       |            50 | Shipping         |
+| Jennifer    | Dilly       |            50 | Shipping         |
+| Timothy     | Gates       |            50 | Shipping         |
+| Randall     | Perkins     |            50 | Shipping         |
+| Sarah       | Bell        |            50 | Shipping         |
+| Britney     | Everett     |            50 | Shipping         |
+| Samuel      | McCain      |            50 | Shipping         |
+| Vance       | Jones       |            50 | Shipping         |
+| Alana       | Walsh       |            50 | Shipping         |
+| Kevin       | Feeney      |            50 | Shipping         |
+| Donald      | OConnell    |            50 | Shipping         |
+| Douglas     | Grant       |            50 | Shipping         |
+| Jennifer    | Whalen      |            10 | Administration   |
+| Michael     | Hartstein   |            20 | Marketing        |
+| Pat         | Fay         |            20 | Marketing        |
+| Susan       | Mavris      |            40 | Human Resources  |
+| Hermann     | Baer        |            70 | Public Relations |
+| Shelley     | Higgins     |           110 | Accounting       |
+| William     | Gietz       |           110 | Accounting       |
++-------------+-------------+---------------+------------------+
+107 rows in set (0.004 sec)
+
+MariaDB [hr086]> -- Ini sebenarnya sama dengan no 7
+MariaDB [hr086]> SELECT e.first_name AS employee_name, m.first_name AS manager_name
+    -> FROM employees e
+    -> LEFT JOIN employees m ON e.manager_id = m.employee_id;
++---------------+--------------+
+| employee_name | manager_name |
++---------------+--------------+
+| Steven        | NULL         |
+| Neena         | Steven       |
+| Lex           | Steven       |
+| Alexander     | Lex          |
+| Bruce         | Alexander    |
+| David         | Alexander    |
+| Valli         | Alexander    |
+| Diana         | Alexander    |
+| Nancy         | Neena        |
+| Daniel        | Nancy        |
+| John          | Nancy        |
+| Ismael        | Nancy        |
+| Jose Manuel   | Nancy        |
+| Luis          | Nancy        |
+| Den           | Steven       |
+| Alexander     | Den          |
+| Shelli        | Den          |
+| Sigal         | Den          |
+| Guy           | Den          |
+| Karen         | Den          |
+| Matthew       | Steven       |
+| Adam          | Steven       |
+| Payam         | Steven       |
+| Shanta        | Steven       |
+| Kevin         | Steven       |
+| Julia         | Matthew      |
+| Irene         | Matthew      |
+| James         | Matthew      |
+| Steven        | Matthew      |
+| Laura         | Adam         |
+| Mozhe         | Adam         |
+| James         | Adam         |
+| TJ            | Adam         |
+| Jason         | Payam        |
+| Michael       | Payam        |
+| Ki            | Payam        |
+| Hazel         | Payam        |
+| Renske        | Shanta       |
+| Stephen       | Shanta       |
+| John          | Shanta       |
+| Joshua        | Shanta       |
+| Trenna        | Kevin        |
+| Curtis        | Kevin        |
+| Randall       | Kevin        |
+| Peter         | Kevin        |
+| John          | Steven       |
+| Karen         | Steven       |
+| Alberto       | Steven       |
+| Gerald        | Steven       |
+| Eleni         | Steven       |
+| Peter         | John         |
+| David         | John         |
+| Peter         | John         |
+| Christopher   | John         |
+| Nanette       | John         |
+| Oliver        | John         |
+| Janette       | Karen        |
+| Patrick       | Karen        |
+| Allan         | Karen        |
+| Lindsey       | Karen        |
+| Louise        | Karen        |
+| Sarath        | Karen        |
+| Clara         | Alberto      |
+| Danielle      | Alberto      |
+| Mattea        | Alberto      |
+| David         | Alberto      |
+| Sundar        | Alberto      |
+| Amit          | Alberto      |
+| Lisa          | Gerald       |
+| Harrison      | Gerald       |
+| Tayler        | Gerald       |
+| William       | Gerald       |
+| Elizabeth     | Gerald       |
+| Sundita       | Gerald       |
+| Ellen         | Eleni        |
+| Alyssa        | Eleni        |
+| Jonathon      | Eleni        |
+| Jack          | Eleni        |
+| Kimberely     | Eleni        |
+| Charles       | Eleni        |
+| Winston       | Matthew      |
+| Jean          | Matthew      |
+| Martha        | Matthew      |
+| Girard        | Matthew      |
+| Nandita       | Adam         |
+| Alexis        | Adam         |
+| Julia         | Adam         |
+| Anthony       | Adam         |
+| Kelly         | Payam        |
+| Jennifer      | Payam        |
+| Timothy       | Payam        |
+| Randall       | Payam        |
+| Sarah         | Shanta       |
+| Britney       | Shanta       |
+| Samuel        | Shanta       |
+| Vance         | Shanta       |
+| Alana         | Kevin        |
+| Kevin         | Kevin        |
+| Donald        | Kevin        |
+| Douglas       | Kevin        |
+| Jennifer      | Neena        |
+| Michael       | Steven       |
+| Pat           | Michael      |
+| Susan         | Neena        |
+| Hermann       | Neena        |
+| Shelley       | Neena        |
+| William       | Shelley      |
++---------------+--------------+
+107 rows in set (0.002 sec)
+
+MariaDB [hr086]>
