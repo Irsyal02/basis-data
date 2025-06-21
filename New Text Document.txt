@@ -450,10 +450,6 @@ Microsoft Windows [Version 10.0.26100.4202]
 
 C:\Users\irsal>d:
 
-D:\>xampp\mysql\bin
-'xampp\mysql\bin' is not recognized as an internal or external command,
-operable program or batch file.
-
 D:\> cd xampp\mysql\bin
 
 D:\xampp\mysql\bin>mysql -u root
